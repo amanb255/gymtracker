@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build outputs
+target/
+*.class
+*.jar
+*.war
+
+# Maven
+.m2
+
+# Environment files (except template)
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Documentation (not needed in image)
+*.md
+README.md
+HELP.md
+
+# Node modules (if any frontend)
+node_modules/
+npm-debug.log
+
+# Logs
+logs/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store

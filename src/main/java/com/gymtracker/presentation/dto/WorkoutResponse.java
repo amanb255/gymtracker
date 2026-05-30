@@ -39,10 +39,11 @@ import java.util.UUID;
  * }
  */
 public record WorkoutResponse(
-        UUID id,
-        UUID userId,
-        LocalDate date,
-        String title,
-        String notes,
-        List<ExerciseResponse> exercises) {
+                UUID id,
+                UUID userId,
+                LocalDate date,
+                String title,
+                String notes,
+                List<ExerciseResponse> exercises,
+                Double totalVolume) {
 }

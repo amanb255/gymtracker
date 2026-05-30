@@ -58,6 +58,7 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Workout workout = new Workout(user, date, title, notes, exercises);
+        workout.calculateTotalVolume();
         return workoutRepository.save(workout);
     }
 
@@ -66,6 +67,8 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
 
         workout.addExercise(exercise);
+        workout.calculateTotalVolume();
+        workoutRepository.save(workout);
         // No need to save explicitly - @Transactional will flush changes
     }
 
@@ -79,6 +82,8 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("Exercise not found in workout"));
 
         workout.removeExercise(exerciseToRemove);
+        workout.calculateTotalVolume();
+        workoutRepository.save(workout);
     }
 
     public Workout updateWorkout(UUID workoutId, String title, String notes) {
@@ -145,6 +150,7 @@ public class WorkoutService {
 
         SetEntry setEntry = new SetEntry(reps, weight);
         exercise.addSetEntry(setEntry);
+        workout.calculateTotalVolume();
         workoutRepository.save(workout);
 
         return setEntry;
@@ -174,7 +180,7 @@ public class WorkoutService {
         if (newWeight != null) {
             setEntry.updateWeight(newWeight);
         }
-
+        workout.calculateTotalVolume();
         workoutRepository.save(workout);
         return setEntry;
     }
@@ -197,6 +203,7 @@ public class WorkoutService {
                 .orElseThrow(() -> new IllegalArgumentException("Set entry not found in exercise"));
 
         exercise.removeSetEntry(setEntry);
+        workout.calculateTotalVolume();
         workoutRepository.save(workout);
     }
 

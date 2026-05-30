@@ -32,6 +32,9 @@ public class Workout {
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exercise> exercises;
 
+    @Column(nullable = false)
+    private Double totalVolume = 0.0;
+
     protected Workout() {
         this.exercises = new ArrayList<>();
     }
@@ -126,5 +129,16 @@ public class Workout {
 
     public void updateNotes(String newNotes) {
         this.notes = newNotes;
+    }
+
+    public double getTotalVolume() {
+        return this.totalVolume;
+    }
+
+    public void calculateTotalVolume() {
+        this.totalVolume = this.exercises.stream()
+                .flatMap(exercise -> exercise.getSets().stream())
+                .mapToDouble(set -> set.getReps() * set.getWeight())
+                .sum();
     }
 }
