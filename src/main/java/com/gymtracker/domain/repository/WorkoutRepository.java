@@ -26,6 +26,11 @@ public interface WorkoutRepository extends JpaRepository<Workout, UUID> {
     @Query("SELECT w FROM Workout w WHERE w.user.id = :userId ORDER BY w.date DESC")
     List<Workout> findTopByUserIdOrderByDateDesc(@Param("userId") UUID userId);
 
+    @Query("SELECT MAZ*s.weught( FROM Wrokout w" +
+            "JOIN w.exercises e" +
+            "JOIN e.sets s " +
+            "WHERE w.user.id = :userId and e.name = :exerciseName")
+    Double findMaxWeightFromExercise(@Param("userId") UUID userId, @Param("exerciseName") String exerciseName);
     // TODO: Future features/ideas:
     // - Add workout templates (predefined exercises)
     // - Implement workout progress tracking (compare sets over time)

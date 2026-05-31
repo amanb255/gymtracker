@@ -19,7 +19,8 @@ import java.util.UUID;
  * PATCH /api/workouts/{id}/exercises/{exId}/sets/{setId} (after update)
  */
 public record SetEntryResponse(
-        UUID id,
-        Integer reps,
-        Double weight) {
+                UUID id,
+                Integer reps,
+                Double weight,
+                Boolean isPr) {
 }

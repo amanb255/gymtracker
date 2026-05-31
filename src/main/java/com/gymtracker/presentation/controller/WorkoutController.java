@@ -2,6 +2,7 @@ package com.gymtracker.presentation.controller;
 
 import com.gymtracker.application.WorkoutService;
 import com.gymtracker.domain.model.*;
+import com.gymtracker.domain.repository.WorkoutRepository;
 import com.gymtracker.presentation.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 public class WorkoutController {
 
         private final WorkoutService workoutService;
+        private final WorkoutRepository workoutRepository;
 
-        public WorkoutController(WorkoutService workoutService) {
+        public WorkoutController(WorkoutService workoutService, WorkoutRepository workoutRepository) {
                 this.workoutService = workoutService;
+                this.workoutRepository = workoutRepository;
         }
 
         /**
@@ -546,26 +549,50 @@ public class WorkoutController {
          * @param workout The domain entity
          * @return The DTO ready to send to client
          */
-        private WorkoutResponse workoutToResponse(Workout workout) {
-                List<ExerciseResponse> exerciseResponses = workout.getExercises().stream()
-                                .map(exercise -> new ExerciseResponse(
-                                                exercise.getId(),
-                                                exercise.getName(),
-                                                exercise.getCategory().toString(),
-                                                exercise.getSets().stream()
-                                                                .map(set -> new SetEntryResponse(set.getId(),
-                                                                                set.getReps(),
-                                                                                (double) set.getWeight()))
-                                                                .collect(Collectors.toList())))
-                                .collect(Collectors.toList());
+        // private WorkoutResponse workoutToResponse(Workout workout) {
+        // List<ExerciseResponse> exerciseResponses = workout.getExercises().stream()
+        // .map(exercise -> new ExerciseResponse(
+        // exercise.getId(),
+        // exercise.getName(),
+        // exercise.getCategory().toString(),
+        // exercise.getSets().stream()
+        // .map(set -> new SetEntryResponse(set.getId(),
+        // set.getReps(),
+        // (double) set.getWeight()))
+        // .collect(Collectors.toList())))
+        // .collect(Collectors.toList());
 
+        // return new WorkoutResponse(
+        // workout.getId(),
+        // workout.getUser().getId(),
+        // workout.getDate(),
+        // workout.getTitle(),
+        // workout.getNotes(),
+        // exerciseResponses,
+        // workout.getTotalVolume());
+        // }
+
+        private WorkoutResponse workoutToReponse(Workout workout) {
+                UUID userId = workout.getUser().getId();
+                List<ExerciseResponse> exerciseReponses = workout.getExercises().stream()
+                                .map(exercise -> {
+                                        Double maxWeight = workoutRepository.findMaxWeightFromExercise(userId,
+                                                        exercise.getName());
+                                        List<SetEntryResponse> setResponses = exercise.getSets().stream().map(set -> {
+                                                boolean isPr = maxWeight != null && set.getWeight() >= maxWeight;
+                                                return new SetEntryResponse(set.getId(),
+                                                                set.getReps(), (double) set.getWeight(), isPr);
+                                        }).collect(Collectors.toList());
+                                        return new ExerciseResponse(exercise.getId(), exercise.getName(),
+                                                        exercise.getCategory().toString(), setResponses);
+                                }).collect(Collectors.toList());
                 return new WorkoutResponse(
                                 workout.getId(),
                                 workout.getUser().getId(),
                                 workout.getDate(),
                                 workout.getTitle(),
                                 workout.getNotes(),
-                                exerciseResponses,
+                                exerciseReponses,
                                 workout.getTotalVolume());
         }
 }
