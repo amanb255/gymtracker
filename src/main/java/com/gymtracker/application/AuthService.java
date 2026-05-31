@@ -31,7 +31,7 @@ public class AuthService {
      * Register a new user with email and password
      */
     public AuthResponse register(String name, String email, String password, LocalDate dateOfBirth, Integer heightCm,
-            Gender gender) {
+            Gender gender, Double weight) {
         // Check if email already exists
         if (userRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
@@ -41,7 +41,7 @@ public class AuthService {
         String hashedPassword = passwordEncoder.encode(password);
 
         // Create and save new user
-        User user = new User(name, email, hashedPassword, dateOfBirth, heightCm, gender);
+        User user = new User(name, email, hashedPassword, dateOfBirth, heightCm, gender, weight);
         User savedUser = userRepository.save(user);
 
         // Generate tokens

@@ -36,8 +36,9 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User createUser(String name, String email, String hashedPassword, LocalDate dateOfBirth, Integer heightCm, Gender gender) {
-        User user = new User(name, email, hashedPassword, dateOfBirth, heightCm, gender);
+    public User createUser(String name, String email, String hashedPassword, LocalDate dateOfBirth, Integer heightCm,
+            Gender gender, Double weight) {
+        User user = new User(name, email, hashedPassword, dateOfBirth, heightCm, gender, weight);
         return userRepository.save(user);
     }
 

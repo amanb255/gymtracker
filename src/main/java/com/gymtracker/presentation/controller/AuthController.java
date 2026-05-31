@@ -49,7 +49,8 @@ public class AuthController {
                 request.password(),
                 request.dateOfBirth(),
                 request.heightCm(),
-                Gender.valueOf(request.gender().toUpperCase()));
+                Gender.valueOf(request.gender().toUpperCase()),
+                request.weight());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

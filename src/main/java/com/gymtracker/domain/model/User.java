@@ -41,6 +41,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Double weight;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workout> workouts;
 
@@ -48,7 +51,8 @@ public class User {
         this.workouts = new ArrayList<Workout>();
     }
 
-    public User(String name, String email, String hashedPassword, LocalDate dateOfBirth, Integer heightCm, Gender gender) {
+    public User(String name, String email, String hashedPassword, LocalDate dateOfBirth, Integer heightCm,
+            Gender gender, Double weight) {
         this.id = UUID.randomUUID();
         this.workouts = new ArrayList<Workout>();
         this.createdAt = LocalDateTime.now();
@@ -82,6 +86,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.hashedPassword = hashedPassword;
+        this.weight = weight;
     }
 
     public UUID getId() {
@@ -120,6 +125,10 @@ public class User {
         return updatedAt;
     }
 
+    public Double getUserWeight() {
+        return weight;
+    }
+
     public List<Workout> getWorkouts() {
         return new ArrayList<>(workouts);
     }
@@ -154,5 +163,9 @@ public class User {
         }
         this.hashedPassword = newHashedPassword;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setUserWeight(Double weight) {
+        this.weight = weight;
     }
 }
