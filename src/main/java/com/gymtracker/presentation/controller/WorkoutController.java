@@ -572,7 +572,7 @@ public class WorkoutController {
         // workout.getTotalVolume());
         // }
 
-        private WorkoutResponse workoutToReponse(Workout workout) {
+        private WorkoutResponse workoutToResponse(Workout workout) {
                 UUID userId = workout.getUser().getId();
                 List<ExerciseResponse> exerciseReponses = workout.getExercises().stream()
                                 .map(exercise -> {
