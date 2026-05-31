@@ -576,7 +576,7 @@ public class WorkoutController {
                 UUID userId = workout.getUser().getId();
                 List<ExerciseResponse> exerciseReponses = workout.getExercises().stream()
                                 .map(exercise -> {
-                                        Double maxWeight = workoutRepository.findMaxWeightFromExercise(userId,
+                                        Double maxWeight = workoutRepository.findMaxWeightForExercise(userId,
                                                         exercise.getName());
                                         List<SetEntryResponse> setResponses = exercise.getSets().stream().map(set -> {
                                                 boolean isPr = maxWeight != null && set.getWeight() >= maxWeight;
