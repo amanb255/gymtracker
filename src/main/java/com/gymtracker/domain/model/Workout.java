@@ -59,10 +59,12 @@ public class Workout {
         this.title = title;
         this.notes = notes;
         this.exercises = new ArrayList<>();
+        this.totalVolume = 0.0;
 
         for (Exercise exercise : exercises) {
             addExercise(exercise);
         }
+        calculateTotalVolume();
     }
 
     public UUID getId() {
@@ -133,6 +135,10 @@ public class Workout {
 
     public double getTotalVolume() {
         return this.totalVolume;
+    }
+
+    public void setTotalVolume(Double totalVolume) {
+        this.totalVolume = totalVolume;
     }
 
     public void calculateTotalVolume() {
